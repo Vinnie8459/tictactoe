@@ -33,8 +33,38 @@ function setGame() {
                 tile.classList.add("vertical-line");
             }
             tile.addEventListener("click", setTile);
+            tile.addEventListener("mouseover", previewMove);
+            tile.addEventListener("mouseleave", unpreviewMove);
             document.getElementById("board").append(tile);
         }
+    }
+}
+
+function previewMove() {
+    if (gameOver) {
+        return;
+    }
+
+    let coords = this.id.split("-")
+    let r = parseInt(coords[0]);
+    let c = parseInt(coords[1])
+
+    if (board[r][c] != ' ') {
+        return;
+    }
+
+    this.innerText = currentPlayer;
+    this.classList.add("not-that-white")
+
+}
+
+function unpreviewMove() {
+    let coords = this.id.split("-")
+    let r = parseInt(coords[0]);
+    let c = parseInt(coords[1])
+
+    if (board[r][c] == ' ') {
+        this.innerText = '';
     }
 }
 
@@ -54,6 +84,7 @@ function setTile() {
 
     board[r][c] = currentPlayer;
     currentClickAudio.play();
+    this.classList.remove("not-that-white")
     this.innerText = currentPlayer;
     this.classList.add("arrow");
 
